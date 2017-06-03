@@ -11,6 +11,7 @@ const LIBPSENSOR_DIR: &'static str = "psensor-1.2.0/src/lib";
 fn main() {
     Command::new("./configure")
         .current_dir(PSENSOR_DIR)
+        .env("CFLAGS", "-fPIC")
         .env("CONFIG_FILES", "src/lib/Makefile")
         .output()
         .and_then(|output| if output.status.success() {
