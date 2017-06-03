@@ -38,9 +38,8 @@ fn main() {
 
     let bindings = bindgen::Builder::default()
         .no_unstable_rust()
-        .clang_arg("-fPIC")
-        .clang_arg("-Ipsensor-1.2.0")
-        .clang_arg("-Ipsensor-1.2.0/src/lib")
+        .clang_arg(format!("-I{}", PSENSOR_DIR))
+        .clang_arg(format!("-I{}", LIBPSENSOR_DIR))
         .header("wrapper.h")
         .generate()
         .expect("Unable to generate bindings");
