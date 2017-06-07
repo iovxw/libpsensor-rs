@@ -41,6 +41,8 @@ fn main() {
         .clang_arg(format!("-I{}", PSENSOR_DIR))
         .clang_arg(format!("-I{}", LIBPSENSOR_DIR))
         .header("wrapper.h")
+        .whitelisted_function("^psensor_.*")
+        .whitelisted_type("^psensor_.*")
         .generate()
         .expect("Unable to generate bindings");
 
