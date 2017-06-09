@@ -74,12 +74,12 @@ impl PsensorList {
     }
 
     #[inline]
-    pub fn iter<'a>(&'a self) -> std::slice::Iter<'a, Psensor> {
+    pub fn iter(&self) -> std::slice::Iter<Psensor> {
         self.vec.iter()
     }
 
     #[inline]
-    pub fn iter_mut<'a>(&'a mut self) -> std::slice::IterMut<'a, Psensor> {
+    pub fn iter_mut(&mut self) -> std::slice::IterMut<Psensor> {
         self.vec.iter_mut()
     }
 }
