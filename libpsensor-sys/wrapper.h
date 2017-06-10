@@ -27,7 +27,7 @@ bool psensor_atasmart_is_supported(void) { return atasmart_is_supported(); }
 void psensor_atasmart_list_append(struct psensor ***s, int n) { atasmart_psensor_list_append(s, n); }
 void psensor_atasmart_list_update(struct psensor **s) { atasmart_psensor_list_update(s); }
 
-void psensor_hddtemp_psensor_list_append(struct psensor ***s, int n) { hddtemp_psensor_list_append(s, n); }
+void psensor_hddtemp_list_append(struct psensor ***s, int n) { hddtemp_psensor_list_append(s, n); }
 void psensor_hddtemp_list_update(struct psensor **s) { hddtemp_psensor_list_update(s); }
 
 bool psensor_udisks2_is_supported(void) { return udisks2_is_supported(); }

@@ -33,7 +33,9 @@ fn main() {
                   })
         .expect("failed to make libpsensor");
 
-    println!("cargo:rustc-link-search={}", LIBPSENSOR_DIR);
+    println!("cargo:rustc-link-search={}/{}",
+             env::var("CARGO_MANIFEST_DIR").unwrap(),
+             LIBPSENSOR_DIR);
     println!("cargo:rustc-link-lib=static=psensor");
 
     let bindings = bindgen::Builder::default()
@@ -43,6 +45,7 @@ fn main() {
         .header("wrapper.h")
         .whitelisted_function("^psensor_.*")
         .whitelisted_type("^psensor_.*")
+        .constified_enum("psensor_type")
         .generate()
         .expect("Unable to generate bindings");
 

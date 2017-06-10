@@ -1,0 +1,5 @@
+temperature.o: temperature.c /usr/include/stdc-predef.h temperature.h
+
+/usr/include/stdc-predef.h:
+
+temperature.h:

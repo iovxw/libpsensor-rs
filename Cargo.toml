@@ -2,9 +2,9 @@
 name = "libpsensor"
 version = "0.1.0"
 authors = ["iovxw <iovxw@outlook.com>"]
-build = "build.rs"
 
 [dependencies]
+futures = "0.1"
+tokio-core = "0.1"
 
-[build-dependencies]
-bindgen = "0.23"
+libpsensor-sys = { version="0.1", path="./libpsensor-sys" }
