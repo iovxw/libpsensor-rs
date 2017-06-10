@@ -74,6 +74,11 @@ impl PsensorList {
     }
 
     #[inline]
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
+    #[inline]
     pub fn iter(&self) -> std::slice::Iter<Psensor> {
         self.vec.iter()
     }
@@ -128,6 +133,12 @@ impl<'a> IntoIterator for &'a mut PsensorList {
     #[inline]
     fn into_iter(self) -> Self::IntoIter {
         self.iter_mut()
+    }
+}
+
+impl Default for PsensorList {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
