@@ -73,6 +73,8 @@ impl PsensorType {
         if raw & sys::psensor_type_SENSOR_TYPE_NVCTRL != 0 {
             if raw & sys::psensor_type_SENSOR_TYPE_TEMP != 0 {
                 return Gpu;
+            } else if raw & sys::psensor_type_SENSOR_TYPE_RPM != 0 {
+                return Fan;
             } else if raw & sys::psensor_type_SENSOR_TYPE_GRAPHICS != 0 {
                 return Other(false); // Graphics usage
             } else if raw & sys::psensor_type_SENSOR_TYPE_VIDEO != 0 {

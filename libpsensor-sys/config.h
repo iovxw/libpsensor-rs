@@ -1,0 +1,4 @@
+// #define HAVE_LIBATIADL  1
+#define HAVE_NVIDIA     1
+#define HAVE_LIBSENSORS 1
+#define HAVE_LIBUDISKS2 1
