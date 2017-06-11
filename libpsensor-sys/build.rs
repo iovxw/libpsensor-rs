@@ -7,7 +7,11 @@ use std::path::PathBuf;
 static LIBPSENSOR_SRC: &str = "psensor-1.2.0/src/lib/";
 
 fn main() {
-    gcc::Config::new().file("wrapper.c").include(".").include(LIBPSENSOR_SRC).compile("libpsensor.a");
+    gcc::Config::new()
+        .file("wrapper.c")
+        .include(".")
+        .include(LIBPSENSOR_SRC)
+        .compile("libpsensor.a");
 
     let bindings = bindgen::Builder::default()
         .no_unstable_rust()
