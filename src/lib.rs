@@ -4,13 +4,13 @@ extern crate tokio_core;
 extern crate libpsensor_sys as sys;
 
 use std::ffi::CStr;
-use std::collections::HashMap;
 use std::time::Duration;
+use std::sync::Arc;
 
 use futures::{stream, Stream, Poll};
 use tokio_core::reactor::{Interval, Handle};
 
-pub fn new(dur: Duration, handle: &Handle) -> (HashMap<String, Psensor>, PsensorStream) {
+pub fn new(dur: Duration, handle: &Handle) -> (Vec<Arc<Psensor>>, PsensorStream) {
     let mut pointer: *mut *mut sys::psensor = std::ptr::null_mut();
     unsafe {
         sys::psensor_amd_list_append(&mut pointer, 1);
@@ -26,13 +26,14 @@ pub fn new(dur: Duration, handle: &Handle) -> (HashMap<String, Psensor>, Psensor
     }
     let len = unsafe { sys::psensor_list_size(pointer) as usize };
     let tmp: &[*mut sys::psensor] = unsafe { std::slice::from_raw_parts_mut(pointer, len) };
-    let mut map = HashMap::with_capacity(len);
+    let mut vec = Vec::with_capacity(len);
     for psensor in tmp {
         let p = unsafe { Psensor::from_raw(*psensor) };
-        map.insert(p.id.clone(), p);
+        vec.push(Arc::new(p));
     }
 
-    (map, PsensorStream::new(pointer, dur, handle))
+    let stream = PsensorStream::new(pointer, vec.clone(), dur, handle);
+    (vec, stream)
 }
 
 #[derive(Debug)]
@@ -123,23 +124,26 @@ impl PsensorType {
 
 pub struct PsensorStream {
     pointer: *mut *mut sys::psensor,
-    stream: Box<Stream<Item = (String, f64), Error = std::io::Error>>,
+    stream: Box<Stream<Item = (Arc<Psensor>, f64), Error = std::io::Error>>,
 }
 
 impl PsensorStream {
-    fn new(pointer: *mut *mut sys::psensor, dur: Duration, handle: &Handle) -> PsensorStream {
+    fn new(pointer: *mut *mut sys::psensor,
+           vec: Vec<Arc<Psensor>>,
+           dur: Duration,
+           handle: &Handle)
+           -> PsensorStream {
         let stream = Interval::new(dur, handle)
             .unwrap()
             .map(move |_| {
                 PsensorStream::update(pointer);
-                let len = unsafe { sys::psensor_list_size(pointer) as usize };
+                let len = vec.len();
                 let sensors: &[*mut sys::psensor] =
                     unsafe { std::slice::from_raw_parts_mut(pointer, len) };
                 let mut r = Vec::with_capacity(len);
-                for &sensor in sensors {
-                    let id = unsafe { CStr::from_ptr((*sensor).id).to_string_lossy().into_owned() };
+                for (&sensor, psensor) in sensors.iter().zip(&vec) {
                     let value = unsafe { sys::psensor_get_current_value(sensor) };
-                    r.push(Ok((id, value)));
+                    r.push(Ok((psensor.clone(), value)));
                 }
                 stream::iter(r.into_iter())
             })
@@ -167,7 +171,7 @@ impl PsensorStream {
 }
 
 impl Stream for PsensorStream {
-    type Item = (String, f64);
+    type Item = (Arc<Psensor>, f64);
     type Error = std::io::Error;
 
     fn poll(&mut self) -> Poll<Option<Self::Item>, Self::Error> {
