@@ -5,8 +5,6 @@ authors = ["iovxw <iovxw@outlook.com>"]
 build = "build.rs"
 
 [dependencies]
-libc = "0.2"
 
 [build-dependencies]
 gcc = "0.3"
-bindgen = "0.23"
