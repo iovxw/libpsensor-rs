@@ -38,23 +38,39 @@ pub fn new(dur: Duration, handle: &Handle) -> (Vec<Arc<Psensor>>, PsensorStream)
 
 #[derive(Debug)]
 pub struct Psensor {
-    name: String,
-    id: String,
-    chip: String,
-    sensor: PsensorType,
-    max: f64,
-    min: f64,
+    pub name: String,
+    pub id: String,
+    pub chip: String,
+    pub sensor: PsensorType,
+    pub max: f64,
+    pub min: f64,
 }
 
 impl Psensor {
     unsafe fn from_raw(raw: *mut sys::psensor) -> Psensor {
+        let name = CStr::from_ptr((*raw).name).to_string_lossy().into_owned();
+        let id = CStr::from_ptr((*raw).id).to_string_lossy().into_owned();
+        let chip = CStr::from_ptr((*raw).chip).to_string_lossy().into_owned();
+        let sensor = match PsensorType::from_raw((*raw).type_) {
+            PsensorType::Other(true) if chip.contains("CPU") => PsensorType::Cpu,
+            PsensorType::Other(true) if chip.contains("GPU") => PsensorType::Gpu,
+            x => x,
+        };
+        let mut max = (*raw).max;
+        if max == std::f64::MIN_POSITIVE {
+            max = std::f64::NAN
+        }
+        let mut min = (*raw).min;
+        if min == std::f64::MIN_POSITIVE {
+            min = std::f64::NAN
+        }
         Psensor {
-            name: CStr::from_ptr((*raw).name).to_string_lossy().into_owned(),
-            id: CStr::from_ptr((*raw).id).to_string_lossy().into_owned(),
-            chip: CStr::from_ptr((*raw).chip).to_string_lossy().into_owned(),
-            sensor: PsensorType::from_raw((*raw).type_),
-            max: (*raw).max,
-            min: (*raw).min,
+            name,
+            id,
+            chip,
+            sensor,
+            max,
+            min,
         }
     }
 }
