@@ -101,7 +101,7 @@ impl std::hash::Hash for Psensor {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum PsensorType {
     Hdd,
     Cpu,
