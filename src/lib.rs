@@ -75,6 +75,32 @@ impl Psensor {
     }
 }
 
+impl PartialEq for Psensor {
+    fn eq(&self, other: &Psensor) -> bool {
+        self.id == other.id
+    }
+}
+
+impl Eq for Psensor {}
+
+impl PartialOrd for Psensor {
+    fn partial_cmp(&self, other: &Psensor) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(&other))
+    }
+}
+
+impl Ord for Psensor {
+    fn cmp(&self, other: &Psensor) -> std::cmp::Ordering {
+        self.id.cmp(&other.id)
+    }
+}
+
+impl std::hash::Hash for Psensor {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.id.hash(state);
+    }
+}
+
 #[derive(Debug)]
 pub enum PsensorType {
     Hdd,
