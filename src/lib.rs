@@ -142,7 +142,8 @@ impl PsensorType {
             return Hdd;
         }
         if raw & sys::psensor_type_SENSOR_TYPE_CPU_USAGE ==
-           sys::psensor_type_SENSOR_TYPE_CPU_USAGE {
+            sys::psensor_type_SENSOR_TYPE_CPU_USAGE
+        {
             return Other(false); // CPU Usage
         }
         if raw & sys::psensor_type_SENSOR_TYPE_RPM != 0 {
@@ -170,11 +171,12 @@ pub struct PsensorStream {
 }
 
 impl PsensorStream {
-    fn new(pointer: *mut *mut sys::psensor,
-           vec: Vec<Arc<Psensor>>,
-           dur: Duration,
-           handle: &Handle)
-           -> PsensorStream {
+    fn new(
+        pointer: *mut *mut sys::psensor,
+        vec: Vec<Arc<Psensor>>,
+        dur: Duration,
+        handle: &Handle,
+    ) -> PsensorStream {
         let stream = Interval::new(dur, handle)
             .unwrap()
             .map(move |_| {

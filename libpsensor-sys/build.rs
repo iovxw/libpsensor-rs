@@ -1,21 +1,23 @@
 extern crate gcc;
 
 static LIBPSENSOR_SRC: &str = "psensor-1.2.0/src/lib/";
-static LIBPSENSOR_SOURCES: [&str; 14] = ["color.c",
-                                         "hdd_hddtemp.c",
-                                         "measure.c",
-                                         "plog.c",
-                                         "pmutex.c",
-                                         "psensor.c",
-                                         "ptime.c",
-                                         "pio.c",
-                                         "slog.c",
-                                         "temperature.c",
-                                         "url.c",
-                                         // OPTION
-                                         "lmsensor.c",
-                                         "nvidia.c",
-                                         "pudisks2.c"];
+static LIBPSENSOR_SOURCES: [&str; 14] = [
+    "color.c",
+    "hdd_hddtemp.c",
+    "measure.c",
+    "plog.c",
+    "pmutex.c",
+    "psensor.c",
+    "ptime.c",
+    "pio.c",
+    "slog.c",
+    "temperature.c",
+    "url.c",
+    // OPTION
+    "lmsensor.c",
+    "nvidia.c",
+    "pudisks2.c",
+];
 
 fn main() {
     let mut config = gcc::Config::new();

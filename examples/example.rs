@@ -13,11 +13,12 @@ fn main() {
     let (sensors, stream) = libpsensor::new(Duration::from_secs(1), &lp.handle());
     println!("{:?}", sensors);
     lp.run(stream.for_each(|(sensor, value)| {
-                                 println!("sensor: {}, type: {:?}, value: {}",
-                                          sensor.name,
-                                          sensor.sensor,
-                                          value);
-                                 Ok(())
-                             }))
-        .unwrap();
+        println!(
+            "sensor: {}, type: {:?}, value: {}",
+            sensor.name,
+            sensor.sensor,
+            value
+        );
+        Ok(())
+    })).unwrap();
 }

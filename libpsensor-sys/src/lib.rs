@@ -37,12 +37,16 @@ pub struct timeval {
 }
 #[test]
 fn bindgen_test_layout_timeval() {
-    assert_eq!(::std::mem::size_of::<timeval>(),
-               16usize,
-               concat!("Size of: ", stringify!(timeval)));
-    assert_eq!(::std::mem::align_of::<timeval>(),
-               8usize,
-               concat!("Alignment of ", stringify!(timeval)));
+    assert_eq!(
+        ::std::mem::size_of::<timeval>(),
+        16usize,
+        concat!("Size of: ", stringify!(timeval))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<timeval>(),
+        8usize,
+        concat!("Alignment of ", stringify!(timeval))
+    );
 }
 
 #[repr(C)]
@@ -53,12 +57,16 @@ pub struct measure {
 }
 #[test]
 fn bindgen_test_layout_measure() {
-    assert_eq!(::std::mem::size_of::<measure>(),
-               24usize,
-               concat!("Size of: ", stringify!(measure)));
-    assert_eq!(::std::mem::align_of::<measure>(),
-               8usize,
-               concat!("Alignment of ", stringify!(measure)));
+    assert_eq!(
+        ::std::mem::size_of::<measure>(),
+        24usize,
+        concat!("Size of: ", stringify!(measure))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<measure>(),
+        8usize,
+        concat!("Alignment of ", stringify!(measure))
+    );
 }
 
 #[repr(C)]
@@ -78,8 +86,10 @@ pub struct psensor {
     pub alarm_low_threshold: f64,
     pub alarm_raised: ::std::os::raw::c_char,
     pub cb_alarm_raised:
-        ::std::option::Option<unsafe extern "C" fn(arg1: *mut psensor,
-                                                   arg2: *mut ::std::os::raw::c_void)>,
+        ::std::option::Option<
+            unsafe extern "C" fn(arg1: *mut psensor,
+                                 arg2: *mut ::std::os::raw::c_void),
+        >,
     pub cb_alarm_raised_data: *mut ::std::os::raw::c_void,
     pub provider_data: *mut ::std::os::raw::c_void,
     pub provider_data_free_fct:
@@ -87,36 +97,44 @@ pub struct psensor {
 }
 #[test]
 fn bindgen_test_layout_psensor() {
-    assert_eq!(::std::mem::size_of::<psensor>(),
-               136usize,
-               concat!("Size of: ", stringify!(psensor)));
-    assert_eq!(::std::mem::align_of::<psensor>(),
-               8usize,
-               concat!("Alignment of ", stringify!(psensor)));
+    assert_eq!(
+        ::std::mem::size_of::<psensor>(),
+        136usize,
+        concat!("Size of: ", stringify!(psensor))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<psensor>(),
+        8usize,
+        concat!("Alignment of ", stringify!(psensor))
+    );
 }
 
-extern {
-    pub fn psensor_create(id: *mut ::std::os::raw::c_char,
-                          name: *mut ::std::os::raw::c_char,
-                          chip: *mut ::std::os::raw::c_char,
-                          type_: ::std::os::raw::c_uint,
-                          values_max_length: ::std::os::raw::c_int)
-                          -> *mut psensor;
+extern "C" {
+    pub fn psensor_create(
+        id: *mut ::std::os::raw::c_char,
+        name: *mut ::std::os::raw::c_char,
+        chip: *mut ::std::os::raw::c_char,
+        type_: ::std::os::raw::c_uint,
+        values_max_length: ::std::os::raw::c_int,
+    ) -> *mut psensor;
     pub fn psensor_values_resize(s: *mut psensor, new_size: ::std::os::raw::c_int);
     pub fn psensor_free(sensor: *mut psensor);
     pub fn psensor_list_free(sensors: *mut *mut psensor);
     pub fn psensor_list_size(sensors: *mut *mut psensor) -> ::std::os::raw::c_int;
-    pub fn psensor_list_get_by_id(sensors: *mut *mut psensor,
-                                  id: *const ::std::os::raw::c_char)
-                                  -> *mut psensor;
-    pub fn psensor_value_to_str(type_: ::std::os::raw::c_uint,
-                                value: f64,
-                                use_celsius: ::std::os::raw::c_int)
-                                -> *mut ::std::os::raw::c_char;
-    pub fn psensor_measure_to_str(m: *const measure,
-                                  type_: ::std::os::raw::c_uint,
-                                  use_celsius: ::std::os::raw::c_uint)
-                                  -> *mut ::std::os::raw::c_char;
+    pub fn psensor_list_get_by_id(
+        sensors: *mut *mut psensor,
+        id: *const ::std::os::raw::c_char,
+    ) -> *mut psensor;
+    pub fn psensor_value_to_str(
+        type_: ::std::os::raw::c_uint,
+        value: f64,
+        use_celsius: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+    pub fn psensor_measure_to_str(
+        m: *const measure,
+        type_: ::std::os::raw::c_uint,
+        use_celsius: ::std::os::raw::c_uint,
+    ) -> *mut ::std::os::raw::c_char;
     pub fn psensor_list_add(sensors: *mut *mut psensor, sensor: *mut psensor) -> *mut *mut psensor;
     pub fn psensor_list_append(sensors: *mut *mut *mut psensor, sensor: *mut psensor);
     pub fn psensor_list_copy(arg1: *mut *mut psensor) -> *mut *mut psensor;
@@ -125,12 +143,14 @@ extern {
     pub fn psensor_get_current_value(arg1: *const psensor) -> f64;
     pub fn psensor_get_current_measure(sensor: *mut psensor) -> *mut measure;
     pub fn psensor_type_to_str(type_: ::std::os::raw::c_uint) -> *const ::std::os::raw::c_char;
-    pub fn psensor_type_to_unit_str(type_: ::std::os::raw::c_uint,
-                                    use_celsius: ::std::os::raw::c_int)
-                                    -> *const ::std::os::raw::c_char;
-    pub fn psensor_current_value_to_str(arg1: *const psensor,
-                                        arg2: ::std::os::raw::c_uint)
-                                        -> *mut ::std::os::raw::c_char;
+    pub fn psensor_type_to_unit_str(
+        type_: ::std::os::raw::c_uint,
+        use_celsius: ::std::os::raw::c_int,
+    ) -> *const ::std::os::raw::c_char;
+    pub fn psensor_current_value_to_str(
+        arg1: *const psensor,
+        arg2: ::std::os::raw::c_uint,
+    ) -> *mut ::std::os::raw::c_char;
     pub fn psensor_log_measures(sensors: *mut *mut psensor);
     pub fn psensor_amd_is_supported() -> bool;
     pub fn psensor_amd_list_update(s: *mut *mut psensor);
@@ -167,18 +187,18 @@ mod test {
             assert!(!psensor_amd_is_supported());
             assert!(!psensor_atasmart_is_supported());
         }
-    let mut pointer: *mut *mut psensor = std::ptr::null_mut();
-    unsafe {
-        psensor_amd_list_append(&mut pointer, 1);
-        psensor_nvidia_list_append(&mut pointer, 1);
-        if psensor_udisks2_is_supported() {
-            psensor_udisks2_list_append(&mut pointer, 1);
-        } else if psensor_atasmart_is_supported() {
-            psensor_atasmart_list_append(&mut pointer, 1);
-        } else {
-            psensor_hddtemp_list_append(&mut pointer, 1);
+        let mut pointer: *mut *mut psensor = std::ptr::null_mut();
+        unsafe {
+            psensor_amd_list_append(&mut pointer, 1);
+            psensor_nvidia_list_append(&mut pointer, 1);
+            if psensor_udisks2_is_supported() {
+                psensor_udisks2_list_append(&mut pointer, 1);
+            } else if psensor_atasmart_is_supported() {
+                psensor_atasmart_list_append(&mut pointer, 1);
+            } else {
+                psensor_hddtemp_list_append(&mut pointer, 1);
+            }
+            psensor_lmsensor_list_append(&mut pointer, 1);
         }
-        psensor_lmsensor_list_append(&mut pointer, 1);
-    }
     }
 }
